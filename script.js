@@ -8,6 +8,7 @@ const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
 const musicaFocoInput = document.querySelector('#alternar-musica');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
+musica.loop = true;
 
 musicaFocoInput.addEventListener('change', () => {
     if(musica.paused) {
