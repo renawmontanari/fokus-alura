@@ -6,9 +6,13 @@ const longoBtn = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
+const startPauseBtn = document.querySelector('#start-pause');
 const musicaFocoInput = document.querySelector('#alternar-musica');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
 musica.loop = true;
+
+let tempoDecorridoEmSegundos = 5;
+let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => {
     if(musica.paused) {
@@ -59,4 +63,17 @@ function alterarContexto(contexto) {
             break;
     } 
 
+};
+
+const contagemRegressiva = () => {
+
+    tempoDecorridoEmSegundos -= 1;
+    console.log('temporizador' + tempoDecorridoEmSegundos)
+    // iniciar();
+};
+
+startPauseBtn.addEventListener('click', contagemRegressiva);
+
+function iniciar() {
+    intervaloId = setInterval(contagemRegressiva, 1000);
 };
