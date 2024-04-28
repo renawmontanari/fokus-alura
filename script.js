@@ -10,13 +10,14 @@ const startPauseBtn = document.querySelector('#start-pause');
 const musicaFocoInput = document.querySelector('#alternar-musica');
 const iniciarOuPausarBtn = document.querySelector('#start-pause span');
 const iconPause = document.querySelector('.app__card-primary-butto-icon');
+const tempoNaTela = document.querySelector('#timer');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
 const beep = new Audio('/sons/beep.mp3');
 const play = new Audio('/sons/play.wav');
 const pause = new Audio('/sons/pause.mp3');
 musica.loop = true;
 
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => {
@@ -28,21 +29,26 @@ musicaFocoInput.addEventListener('change', () => {
 });
 
 focoBtn.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 1500;
     alterarContexto('foco');
     focoBtn.classList.add('active');
 });
 
 curtoBtn.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 300;
     alterarContexto('descanso-curto');
     curtoBtn.classList.add('active');
 });
 
 longoBtn.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 900;
     alterarContexto('descanso-longo');
     longoBtn.classList.add('active');
 });
 
 function alterarContexto(contexto) {
+
+    mostrarTempo();
 
     botoes.forEach(function (contexto) {
         contexto.classList.remove('active');
@@ -72,13 +78,13 @@ function alterarContexto(contexto) {
 
 const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0) {
-        //beep.play();
+        beep.play();
         alert('tempo finalizado')
         zerar();
         return;
     }
     tempoDecorridoEmSegundos -= 1;
-    console.log('temporizador' + tempoDecorridoEmSegundos)
+    mostrarTempo();
 };
 
 startPauseBtn.addEventListener('click', iniciarOuPausar);
@@ -102,3 +108,11 @@ function zerar() {
     iconPause.setAttribute('src', '/imagens/play_arrow.png');
     intervaloId = null;
 };
+
+function mostrarTempo() {
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000);
+    const tempoFormatado = tempo.toLocaleTimeString('pt-br', {minute: '2-digit', second: '2-digit'});
+    tempoNaTela.innerHTML = `${tempoFormatado}`;
+}
+
+mostrarTempo();
